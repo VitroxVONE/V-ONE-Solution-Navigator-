@@ -1,5 +1,83 @@
-<!-- 1. Provide a trigger button with id="chat-button" -->
-<button id="chat-button">Chat with AI</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V-ONE Chatbot Showcase</title>
+    <style>
+        /* General page styling */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            color: #334e68;
+        }
 
-<!-- 2. Load the widget -->
-<script src="https://cloud.v-one.my/public/chat/widget.js?appId=4b91029e-0d19-4707-b26e-ac15bd1ae87c&title=V-ONE+Solution+Navigator"></script>
+        /* Container for the showcase content */
+        .showcase-container {
+            text-align: center;
+            background: #ffffff;
+            padding: 50px 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #102a43;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+            color: #627d98;
+        }
+
+        /* Styling for your specific trigger button */
+        #chat-button {
+            background-color: #243B53; /* Dark sleek blue */
+            color: #ffffff;
+            border: none;
+            padding: 14px 32px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(36, 59, 83, 0.2);
+        }
+
+        #chat-button:hover {
+            background-color: #102a43;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(36, 59, 83, 0.3);
+        }
+
+        #chat-button:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="showcase-container">
+        <h1>V-ONE Solution Navigator</h1>
+        <p>Welcome to our interactive support portal. Need help navigating our solutions? Our AI assistant is ready to help you 24/7. Click the button below to begin.</p>
+        
+        <button id="chat-button">Chat with AI</button>
+    </div>
+
+    <script src="https://cloud.v-one.my/public/chat/widget.js?appId=4b91029e-0d19-4707-b26e-ac15bd1ae87c&title=V-ONE+Solution+Navigator"></script>
+
+</body>
+</html>
