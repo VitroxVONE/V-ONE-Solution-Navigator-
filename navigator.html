@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V-ONE Solution Navigator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B2545;
+    --ink-2:#13315C;
+    --primary:#0057D9;
+    --signal:#12B886;
+    --amber:#F59F00;
+    --violet:#7C5CFF;
+    --sky:#4C9BFF;
+    --paper:#F4F8FC;
+    --grid:#E3EBF4;
+    --grid-strong:#D3DFEC;
+    --card:#FFFFFF;
+    --panel:#EEF3F9;
+    --panel-line:#DCE6F1;
+    --border:#DAE4F0;
+    --muted:#5A7089;
+    --mono-dim:#8095AD;
+
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    font-family:var(--body);
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px),
+      linear-gradient(to right, var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-strong) 1px, transparent 1px);
+    background-size:32px 32px, 32px 32px, 160px 160px, 160px 160px;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+
+  /* ---------- Instrument panel card ---------- */
+  .panel{
+    position:relative;
+    width:100%;
+    max-width:430px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:26px 26px 22px;
+    box-shadow:0 24px 60px rgba(11,37,69,.10), 0 4px 14px rgba(11,37,69,.05);
+    animation:rise .55s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .panel::before,.panel::after{
+    content:"";position:absolute;width:14px;height:14px;pointer-events:none;
+    border-color:var(--grid-strong);border-style:solid;
+  }
+  .panel::before{top:10px;left:10px;border-width:1.5px 0 0 1.5px;border-top-left-radius:4px}
+  .panel::after{bottom:10px;right:10px;border-width:0 1.5px 1.5px 0;border-bottom-right-radius:4px}
+
+  /* ---------- Status header ---------- */
+  .statusbar{
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--mono-dim);
+    padding-bottom:16px;margin-bottom:20px;border-bottom:1px dashed var(--panel-line);
+  }
+  .statusbar .live{display:flex;align-items:center;gap:7px;color:var(--ink-2)}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--signal);
+    box-shadow:0 0 0 0 rgba(18,184,134,.5);animation:ping 1.8s ease-out infinite}
+
+  /* ---------- Brand ---------- */
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .badge{
+    width:52px;height:52px;flex:none;border-radius:13px;
+    background:linear-gradient(150deg,var(--ink) 0%,var(--ink-2) 100%);
+    display:flex;align-items:center;justify-content:center;color:#CFE0FF;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 6px 16px rgba(11,37,69,.28);
+  }
+  .brand h1{
+    font-family:var(--display);font-size:22px;font-weight:700;
+    letter-spacing:-.01em;line-height:1.05;color:var(--ink);
+  }
+  .brand .sub{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);margin-top:6px;
+  }
+
+  /* ---------- Signature: agentic ticket routing (white) ---------- */
+  .device{
+    background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;
+    padding:18px 16px 14px;margin-bottom:14px;
+  }
+  .map{
+    border-radius:11px;overflow:hidden;position:relative;
+    background:#FFFFFF;border:1px solid var(--panel-line);padding:8px 10px 4px;
+  }
+  .map svg{display:block;width:100%;height:auto}
+  .flow{stroke-dasharray:4 6;animation:dash 1.4s linear infinite}
+  @keyframes dash{to{stroke-dashoffset:-20}}
+  .pulse{animation:soft 2.4s ease-in-out infinite}
+  @keyframes soft{0%,100%{opacity:.55}50%{opacity:1}}
+  .map-note{font-size:11.5px;line-height:1.5;color:var(--muted);
+    text-align:center;margin:11px 4px 0}
+  .map-note b{color:var(--ink-2);font-weight:600}
+
+  /* action chips */
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:13px 0 2px;justify-content:center}
+  .chip{
+    font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+    color:var(--ink-2);background:var(--card);
+    border:1px solid var(--panel-line);border-radius:6px;padding:5px 9px;
+  }
+  .chip b{color:var(--primary);font-weight:700}
+
+  /* ---------- Welcome copy ---------- */
+  .welcome{
+    background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;
+    padding:16px 18px;margin-bottom:20px;
+  }
+  .welcome p{font-size:14px;line-height:1.62;color:var(--muted);font-weight:450}
+  .welcome b{color:var(--ink-2);font-weight:600}
+
+  /* ---------- CTA ---------- */
+  .cta{
+    width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+    font-family:var(--display);font-size:15px;font-weight:600;letter-spacing:.01em;
+    color:#fff;background:var(--primary);border:none;border-radius:12px;
+    padding:15px 20px;cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,87,217,.28);
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .cta:hover{background:#0049B8;transform:translateY(-2px);
+    box-shadow:0 12px 26px rgba(0,87,217,.36)}
+  .cta:active{transform:translateY(0)}
+  .cta:focus-visible{outline:3px solid rgba(0,87,217,.4);outline-offset:2px}
+  .cta svg{width:19px;height:19px;stroke:currentColor;stroke-width:2;fill:none;
+    stroke-linecap:round;stroke-linejoin:round}
+
+  .foot{
+    margin-top:14px;text-align:center;font-family:var(--mono);
+    font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mono-dim);
+  }
+  .foot .hint{color:var(--amber);text-transform:none;letter-spacing:0;
+    font-family:var(--body);font-size:12px;margin-top:6px;display:none}
+
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes ping{0%{box-shadow:0 0 0 0 rgba(18,184,134,.5)}
+    70%{box-shadow:0 0 0 7px rgba(18,184,134,0)}100%{box-shadow:0 0 0 0 rgba(18,184,134,0)}}
+
+  @media (max-width:480px){
+    .panel{padding:22px 18px 18px;border-radius:18px}
+    .brand h1{font-size:20px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important}
+  }
+</style>
+</head>
+<body>
+
+  <main class="panel" role="main">
+
+    <div class="statusbar">
+      <span>V-Care · Ticket routing</span>
+      <span class="live"><span class="live-dot"></span>Online</span>
+    </div>
+
+    <div class="brand">
+      <div class="badge" aria-hidden="true">
+        <!-- compass / navigator glyph -->
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <polygon points="15.5,8.5 10.5,10.5 8.5,15.5 13.5,13.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <div>
+        <h1>V-ONE Solution<br>Navigator</h1>
+        <div class="sub">Agentic AI Support Hub</div>
+      </div>
+    </div>
+
+    <!-- SIGNATURE: request -> agentic AI -> V-Care ticket -> routed to product team -->
+    <section class="device" aria-label="How the Navigator routes your request">
+      <div class="map">
+        <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet" role="img"
+             aria-label="Agentic AI hub routing a request to the V-ONE, MARS, ERP and MES, and DIMO teams">
+          <!-- routing lines -->
+          <g fill="none" stroke-width="1.8" stroke-linecap="round">
+            <path class="flow" stroke="#12B886" d="M200 100 L70 46"/>
+            <path class="flow" stroke="#4C9BFF" d="M200 100 L330 46"/>
+            <path class="flow" stroke="#F59F00" d="M200 100 L70 154"/>
+            <path class="flow" stroke="#7C5CFF" d="M200 100 L330 154"/>
+          </g>
+
+          <!-- product nodes -->
+          <circle class="pulse" cx="70"  cy="46"  r="7" fill="#12B886"/>
+          <circle class="pulse" cx="330" cy="46"  r="7" fill="#4C9BFF"/>
+          <circle class="pulse" cx="70"  cy="154" r="7" fill="#F59F00"/>
+          <circle class="pulse" cx="330" cy="154" r="7" fill="#7C5CFF"/>
+
+          <!-- labels -->
+          <g font-family="'JetBrains Mono',monospace" text-anchor="middle">
+            <text x="70"  y="28"  font-size="10" font-weight="700" fill="#13315C">V-ONE</text>
+            <text x="70"  y="66"  font-size="7"  fill="#5A7089">AI automation</text>
+
+            <text x="330" y="28"  font-size="10" font-weight="700" fill="#13315C">MARS</text>
+            <text x="330" y="66"  font-size="7"  fill="#5A7089">Machine monitoring</text>
+
+            <text x="70"  y="146" font-size="10" font-weight="700" fill="#13315C">ERP &amp; MES</text>
+            <text x="70"  y="180" font-size="7"  fill="#5A7089">Manufacturing execution</text>
+
+            <text x="330" y="146" font-size="10" font-weight="700" fill="#13315C">DIMO</text>
+            <text x="330" y="180" font-size="7"  fill="#5A7089">Job intelligence</text>
+          </g>
+
+          <!-- central agentic-AI / ticket hub -->
+          <circle cx="200" cy="100" r="23" fill="#EAF1FF" stroke="#0057D9" stroke-width="1.6"/>
+          <g stroke="#0057D9" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="190" y="92" width="20" height="15" rx="2.5"/>
+            <line x1="190" y1="99.5" x2="210" y2="99.5" stroke-dasharray="1.6 2"/>
+          </g>
+          <text x="200" y="140" text-anchor="middle" font-family="'JetBrains Mono',monospace"
+                font-size="8.5" font-weight="700" fill="#0B2545" letter-spacing="1">AGENTIC&#160;AI</text>
+        </svg>
+      </div>
+
+      <p class="map-note">Your request becomes a <b>V-Care ticket</b>, auto-routed to the right team.</p>
+
+      <div class="chips" aria-label="What you can do">
+        <span class="chip"><b>RAISE</b> a ticket</span>
+        <span class="chip"><b>PRODUCT</b> help</span>
+        <span class="chip"><b>BOOK</b> a demo</span>
+      </div>
+    </section>
+
+    <div class="welcome">
+      <p>Welcome to the <b>V-ONE Solution Navigator</b>, ViTrox's agentic AI support hub. Tell me what you need and I'll turn it into a <b>V-Care ticket</b> routed to the right team, across V-ONE (AI automation), MARS (machine monitoring), ERP&amp;MES (manufacturing execution) and DIMO (job intelligence).</p>
+    </div>
+
+    <button id="chat-button" class="cta" type="button">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Ask the Navigator
+    </button>
+
+    <div class="foot">
+      V-Care · Requests routed to the right team
+      <div class="hint" id="hint">Assistant is still loading — try again in a second.</div>
+    </div>
+
+  </main>
+
+  <!-- V-ONE chat widget -->
+  <script src="https://cloud.v-one.my/public/chat/widget.js?appId=4b91029e-0d19-4707-b26e-ac15bd1ae87c&title=V-ONE+Solution+Navigator"></script>
+
+  <script>
+    function openAssistant(){
+      try{
+        if (window.Chatbot   && typeof window.Chatbot.open   === 'function'){ window.Chatbot.open();   return true; }
+        if (window.VOneChat  && typeof window.VOneChat.open  === 'function'){ window.VOneChat.open();  return true; }
+        for (const host of document.querySelectorAll('*')){
+          if (host.shadowRoot){
+            const b = host.shadowRoot.querySelector('button,[role="button"],[class*="launch"],[class*="bubble"],[class*="toggle"]');
+            if (b){ b.click(); return true; }
+          }
+        }
+        const b = document.querySelector('[class*="chat"] button,[id*="chat"] button,[class*="widget"] button,[class*="launcher"]');
+        if (b){ b.click(); return true; }
+      }catch(e){ console.warn(e); }
+      return false;
+    }
+
+    document.getElementById('chat-button').addEventListener('click', () => {
+      const hint = document.getElementById('hint');
+      let tries = 0;
+      (function attempt(){
+        if (openAssistant()){ hint.style.display='none'; return; }
+        if (++tries < 5){ hint.style.display='block'; setTimeout(attempt, 500); }
+      })();
+    });
+  </script>
+</body>
+</html>
