@@ -111,23 +111,15 @@
   @keyframes dash{to{stroke-dashoffset:-20}}
   .pulse{animation:soft 2.4s ease-in-out infinite}
   @keyframes soft{0%,100%{opacity:.55}50%{opacity:1}}
-  .map-note{font-size:11.5px;line-height:1.5;color:var(--muted);
-    text-align:center;margin:11px 4px 0}
-  .map-note b{color:var(--ink-2);font-weight:600}
+  .map-note{display:none}
 
   /* action chips */
-  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:13px 0 2px;justify-content:center}
-  .chip{
-    font-family:var(--mono);font-size:10px;letter-spacing:.06em;
-    color:var(--ink-2);background:var(--card);
-    border:1px solid var(--panel-line);border-radius:6px;padding:5px 9px;
-  }
-  .chip b{color:var(--primary);font-weight:700}
+  .chips{display:none}
 
   /* ---------- Welcome copy ---------- */
   .welcome{
     background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;
-    padding:16px 18px;margin-bottom:20px;
+    padding:14px 18px;margin:16px 0 2px;
   }
   .welcome p{font-size:14px;line-height:1.62;color:var(--muted);font-weight:450}
   .welcome b{color:var(--ink-2);font-weight:600}
@@ -148,12 +140,6 @@
   .cta svg{width:19px;height:19px;stroke:currentColor;stroke-width:2;fill:none;
     stroke-linecap:round;stroke-linejoin:round}
 
-  .foot{
-    margin-top:14px;text-align:center;font-family:var(--mono);
-    font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mono-dim);
-  }
-  .foot .hint{color:var(--amber);text-transform:none;letter-spacing:0;
-    font-family:var(--body);font-size:12px;margin-top:6px;display:none}
 
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   @keyframes ping{0%{box-shadow:0 0 0 0 rgba(18,184,134,.5)}
@@ -235,28 +221,15 @@
                 font-size="8.5" font-weight="700" fill="#0B2545" letter-spacing="1">AGENTIC&#160;AI</text>
         </svg>
       </div>
-
-      <p class="map-note">Your request becomes a <b>V-Care ticket</b>, auto-routed to the right team.</p>
-
-      <div class="chips" aria-label="What you can do">
-        <span class="chip"><b>RAISE</b> a ticket</span>
-        <span class="chip"><b>PRODUCT</b> help</span>
-        <span class="chip"><b>BOOK</b> a demo</span>
-      </div>
     </section>
-
-    <div class="welcome">
-      <p>Welcome to the <b>V-ONE Solution Navigator</b>, ViTrox's agentic AI support hub. Tell me what you need and I'll turn it into a <b>V-Care ticket</b> routed to the right team, across V-ONE (AI automation), MARS (machine monitoring), ERP&amp;MES (manufacturing execution) and DIMO (job intelligence).</p>
-    </div>
 
     <button id="chat-button" class="cta" type="button">
       <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       Ask the Navigator
     </button>
 
-    <div class="foot">
-      V-Care · Requests routed to the right team
-      <div class="hint" id="hint">Assistant is still loading — try again in a second.</div>
+    <div class="welcome">
+      <p>Tell me what you need — I'll turn it into a <b>V-Care ticket</b> routed to the right team across V-ONE, MARS, ERP&amp;MES and DIMO.</p>
     </div>
 
   </main>
@@ -282,11 +255,10 @@
     }
 
     document.getElementById('chat-button').addEventListener('click', () => {
-      const hint = document.getElementById('hint');
       let tries = 0;
       (function attempt(){
-        if (openAssistant()){ hint.style.display='none'; return; }
-        if (++tries < 5){ hint.style.display='block'; setTimeout(attempt, 500); }
+        if (openAssistant()) return;
+        if (++tries < 5) setTimeout(attempt, 500);
       })();
     });
   </script>
